@@ -14,15 +14,18 @@ var defaultOpt={
 					   color:{
 						           log:{
 								        bc:'#cecece',   
-								        fc:'black'   
+								        fc:'black',
+                                        bold:true   
 								       },
 								   warn:{
 								        bc:'orange',   
-								        fc:'black'   
+								        fc:'black',
+                                        bold:true   
 								       },
 								   error:{
 								        bc:'red',   
-								        fc:'black'   
+								        fc:'black',
+                                        bold:true
 								       }	   
 						        	   
 						         }
@@ -32,15 +35,18 @@ var defaultOpt={
 		   				   color:{
 						           log:{
 								        bc:'#cecece',   
-								        fc:'black'   
+								        fc:'black',
+                                        bold:true										
 								       },
 								  warn:{
 								        bc:'orange',   
-								        fc:'black'   
+								        fc:'black',
+                                        bold:true																				
 								       },
 						          error:{
 								        bc:'red',   
-								        fc:'black'   
+								        fc:'black',
+                                        bold:true   
 								       }
 						           
 						         }
@@ -59,12 +65,24 @@ var $string='';
 if(colorArray.indexOf("bc")!= -1){
        $string += 'background-color:'+color[errorType].bc+';';	
 }
+if(colorArray.indexOf("bold")!= -1){
+       $string += 'font-weight:bold;';	
+}
 
 if(colorArray.indexOf("fc")!= -1){
        $string += 'color:'+color[errorType].fc+';';	
 }
 
 return $string;
+}
+
+var prefixFillZero=function(str){
+
+if(str<10){
+str='0'+str;
+}
+
+return str;
 }
 
 var getCurrentDate=function(){
@@ -74,12 +92,25 @@ var monthNames = ["January", "February", "March", "April", "May", "June",
 ];
 
 var d = new Date();
-$date='['+d.getFullYear()+' '+d.getDate()+' '+monthNames[d.getMonth()]+','+' '+d.getHours()+':'+d.getMinutes()+':'+d.getSeconds()+'] ';
+
+h=d.getHours();
+m=d.getMinutes();
+i=d.getSeconds();
+date=d.getDate();
+
+date=prefixFillZero(date);
+h=prefixFillZero(h);
+m=prefixFillZero(m);
+i=prefixFillZero(i);
+
+
+$date='['+d.getFullYear()+' '+date+' '+monthNames[d.getMonth()]+','+' '+h+':'+m+':'+i+'] ';
 return $date;
 }
 			
 //log [msg,mode,isColorEnable,mode proptery]
 var fn_log_e=function(msg,mode,isColorEnable,mp){
+
 $date=getCurrentDate();
 if(isColorEnable){
 css=getStyle(mp.color,'log');
@@ -89,12 +120,28 @@ console.log($date+msg)
 }
 
 }
-//warn
-var fn_warn_e=function(msg,mode){
+//warn [msg,mode,isColorEnable,mode proptery]
+var fn_warn_e=function(msg,mode,isColorEnable,mp){
+
+$date=getCurrentDate();
+if(isColorEnable){
+css=getStyle(mp.color,'warn');
+console.log($date+"%c"+msg,css)
+}else{
+console.warn($date+msg)
+}
 
 }
-//error
-var fn_error_e=function(msg,mode){
+//error [msg,mode,isColorEnable,mode proptery]
+var fn_error_e=function(msg,mode,isColorEnable,mp){
+
+$date=getCurrentDate();
+if(isColorEnable){
+css=getStyle(mp.color,'error');
+console.log($date+"%c"+msg,css)
+}else{
+console.error($date+msg)
+}
 
 }
 			
@@ -124,8 +171,19 @@ if(self.isLogEnable){
 };
 self.warn=function(msg){
 
+if(self.isLogEnable){
+
+  fn_warn_e(msg,self.newOpt.mode,self.newOpt.color,self.mp)
+}
+
+
 };
 self.error=function(msg){
+
+if(self.isLogEnable){
+
+  fn_error_e(msg,self.newOpt.mode,self.newOpt.color,self.mp)
+}
 
 };
 
@@ -140,8 +198,14 @@ window.NN_JS_Log=function(updateOpt){
 
 })(jQuery,window);
 
-var d=NN_JS_Log({color:false})
-d.log('dd');
+var NN_log_color=NN_JS_Log({color:true})
+NN_log_color.log('Log');
+NN_log_color.warn('Warn');
+NN_log_color.error('Error');
+var NN_log_no_color=NN_JS_Log({color:false})
+NN_log_no_color.log('Log');
+NN_log_no_color.warn('Warn');
+NN_log_no_color.error('Error');
 </script>
 
 
