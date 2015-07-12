@@ -1,0 +1,150 @@
+<html>
+<head>
+<title>Implementing Javascript Log</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+</head>
+<body>
+<h1>Implementing Javascript Log</h1>
+<script>
+(function($,window){
+
+var defaultOpt={
+              pro:{
+			               show_log:false,
+					   color:{
+						           log:{
+								        bc:'#cecece',   
+								        fc:'black'   
+								       },
+								   warn:{
+								        bc:'orange',   
+								        fc:'black'   
+								       },
+								   error:{
+								        bc:'red',   
+								        fc:'black'   
+								       }	   
+						        	   
+						         }
+						 },
+              dev:{
+			               show_log:true,
+		   				   color:{
+						           log:{
+								        bc:'#cecece',   
+								        fc:'black'   
+								       },
+								  warn:{
+								        bc:'orange',   
+								        fc:'black'   
+								       },
+						          error:{
+								        bc:'red',   
+								        fc:'black'   
+								       }
+						           
+						         }
+			       },
+			  mode:'dev',
+			  color:true
+			  
+            };
+			
+function getStyle(color,errorType){
+
+colorArray=Object.keys(color[errorType]);
+
+var $string='';
+
+if(colorArray.indexOf("bc")!= -1){
+       $string += 'background-color:'+color[errorType].bc+';';	
+}
+
+if(colorArray.indexOf("fc")!= -1){
+       $string += 'color:'+color[errorType].fc+';';	
+}
+
+return $string;
+}
+
+var getCurrentDate=function(){
+
+var monthNames = ["January", "February", "March", "April", "May", "June",
+  "July", "August", "September", "October", "November", "December"
+];
+
+var d = new Date();
+$date='['+d.getFullYear()+' '+d.getDate()+' '+monthNames[d.getMonth()]+','+' '+d.getHours()+':'+d.getMinutes()+':'+d.getSeconds()+'] ';
+return $date;
+}
+			
+//log [msg,mode,isColorEnable,mode proptery]
+var fn_log_e=function(msg,mode,isColorEnable,mp){
+$date=getCurrentDate();
+if(isColorEnable){
+css=getStyle(mp.color,'log');
+console.log($date+"%c"+msg,css)
+}else{
+console.log($date+msg)
+}
+
+}
+//warn
+var fn_warn_e=function(msg,mode){
+
+}
+//error
+var fn_error_e=function(msg,mode){
+
+}
+			
+function fn_NN_JS_Log(updateOpt){
+var self=this;
+self.newOpt=$.extend( true, defaultOpt, updateOpt );  
+
+  if('dev'==self.newOpt.mode){
+    self.isLogEnable=self.newOpt.dev.show_log;
+	self.mp=self.newOpt.dev;
+  }else if('pro'==self.newOpt.mode){
+	self.isLogEnable=self.newOpt.pro.show_log;
+	//mp mode property
+	self.mp=self.newOpt.pro;
+  }else{
+    console.error('Please select correct mode: dev, pro or you can make your own mode.');
+	return false;
+  }
+  
+self.log=function(msg){
+
+if(self.isLogEnable){
+
+  fn_log_e(msg,self.newOpt.mode,self.newOpt.color,self.mp)
+}
+
+};
+self.warn=function(msg){
+
+};
+self.error=function(msg){
+
+};
+
+ return self;
+}
+
+
+
+window.NN_JS_Log=function(updateOpt){
+ return new fn_NN_JS_Log(updateOpt)
+};
+
+})(jQuery,window);
+
+var d=NN_JS_Log({color:false})
+d.log('dd');
+</script>
+
+
+
+</body>
+</html>
