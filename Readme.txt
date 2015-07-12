@@ -11,3 +11,5 @@ Production:
 Development:
  Error log is Enable.
 
+Requirements: 
+ Install Jquery (https://jquery.com/download/)
