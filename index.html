@@ -55,6 +55,7 @@ var defaultOpt={
 			  color:true
 			  
             };
+
 			
 function getStyle(color,errorType){
 
@@ -109,38 +110,98 @@ return $date;
 }
 			
 //log [msg,mode,isColorEnable,mode proptery]
-var fn_log_e=function(msg,mode,isColorEnable,mp){
+var fn_log_e=function(msg,mode,isColorEnable,mp,pre,post,repeat){
 
 $date=getCurrentDate();
 if(isColorEnable){
 css=getStyle(mp.color,'log');
+if(pre != undefined){
+repNumber=repeat || 1;
+  preT=pre.repeat(repNumber); 
+ console.log("%c"+preT,css)
+}
 console.log($date+"%c"+msg,css)
+if(post != undefined){
+repNumber=repeat || 1;
+  postT=post.repeat(repNumber); 
+ console.log("%c"+postT,css)
+}
 }else{
+if(pre != undefined){
+  repNumber=repeat || 1;
+  preT=pre.repeat(repNumber); 
+ console.log(preT)
+}
 console.log($date+msg)
+if(post != undefined){
+ repNumber=repeat || 1;
+  postT=post.repeat(repNumber); 
+ console.log(postT)
+}
 }
 
 }
 //warn [msg,mode,isColorEnable,mode proptery]
-var fn_warn_e=function(msg,mode,isColorEnable,mp){
+var fn_warn_e=function(msg,mode,isColorEnable,mp,pre,post,repeat){
 
 $date=getCurrentDate();
 if(isColorEnable){
 css=getStyle(mp.color,'warn');
+if(pre != undefined){
+repNumber=repeat || 1;
+  preT=pre.repeat(repNumber); 
+ console.log("%c"+preT,css)
+}
 console.log($date+"%c"+msg,css)
+if(post != undefined){
+repNumber=repeat || 1;
+  postT=post.repeat(repNumber); 
+ console.log("%c"+postT,css)
+}
 }else{
+if(pre != undefined){
+  repNumber=repeat || 1;
+  preT=pre.repeat(repNumber); 
+ console.log(preT)
+}
 console.warn($date+msg)
+if(post != undefined){
+ repNumber=repeat || 1;
+  postT=post.repeat(repNumber); 
+ console.log(postT)
+}
 }
 
 }
 //error [msg,mode,isColorEnable,mode proptery]
-var fn_error_e=function(msg,mode,isColorEnable,mp){
+var fn_error_e=function(msg,mode,isColorEnable,mp,pre,post,repeat){
 
 $date=getCurrentDate();
 if(isColorEnable){
 css=getStyle(mp.color,'error');
+if(pre != undefined){
+repNumber=repeat || 1;
+  preT=pre.repeat(repNumber); 
+ console.log("%c"+preT,css)
+}
 console.log($date+"%c"+msg,css)
+if(post != undefined){
+repNumber=repeat || 1;
+  postT=post.repeat(repNumber); 
+ console.log("%c"+postT,css)
+}
 }else{
+if(pre != undefined){
+  repNumber=repeat || 1;
+  preT=pre.repeat(repNumber); 
+ console.log(preT)
+}
 console.error($date+msg)
+if(post != undefined){
+ repNumber=repeat || 1;
+  postT=post.repeat(repNumber); 
+ console.log(postT)
+}
 }
 
 }
@@ -148,7 +209,7 @@ console.error($date+msg)
 function fn_NN_JS_Log(updateOpt){
 var self=this;
 self.newOpt=$.extend( true, defaultOpt, updateOpt );  
-
+console.log(self);
   if('dev'==self.newOpt.mode){
     self.isLogEnable=self.newOpt.dev.show_log;
 	self.mp=self.newOpt.dev;
@@ -161,11 +222,14 @@ self.newOpt=$.extend( true, defaultOpt, updateOpt );
 	return false;
   }
   
+self.prefix=null;
+self.suffix=null;
+self.repeat=null;  
 self.log=function(msg){
 
 if(self.isLogEnable){
 
-  fn_log_e(msg,self.newOpt.mode,self.newOpt.color,self.mp)
+  fn_log_e(msg,self.newOpt.mode,self.newOpt.color,self.mp,self.prefix,self.suffix,self.repeat);
 }
 
 };
@@ -173,7 +237,7 @@ self.warn=function(msg){
 
 if(self.isLogEnable){
 
-  fn_warn_e(msg,self.newOpt.mode,self.newOpt.color,self.mp)
+  fn_warn_e(msg,self.newOpt.mode,self.newOpt.color,self.mp,self.prefix,self.suffix,self.repeat);
 }
 
 
@@ -182,7 +246,7 @@ self.error=function(msg){
 
 if(self.isLogEnable){
 
-  fn_error_e(msg,self.newOpt.mode,self.newOpt.color,self.mp)
+  fn_error_e(msg,self.newOpt.mode,self.newOpt.color,self.mp,self.prefix,self.suffix,self.repeat);
 }
 
 };
@@ -199,10 +263,18 @@ window.NN_JS_Log=function(updateOpt){
 })(jQuery,window);
 
 var NN_log_color=NN_JS_Log({color:true})
+NN_log_color.prefix='prefixxx';
+NN_log_color.repeat=null;
+NN_log_color.suffix='suffixxx';
+NN_log_color.log('Log');
 NN_log_color.log('Log');
 NN_log_color.warn('Warn');
 NN_log_color.error('Error');
 var NN_log_no_color=NN_JS_Log({color:false})
+NN_log_no_color.prefix='prefixxx';
+NN_log_no_color.repeat=null;
+NN_log_no_color.suffix='suffixxx';
+
 NN_log_no_color.log('Log');
 NN_log_no_color.warn('Warn');
 NN_log_no_color.error('Error');
