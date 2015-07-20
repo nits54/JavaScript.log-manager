@@ -7,7 +7,6 @@
 <h1>Implementing Javascript Log</h1>
 <script>
 (function($,window){
-
 var defaultOpt={
               pro:{
 			               show_log:false,
@@ -53,170 +52,60 @@ var defaultOpt={
 			       },
 			  mode:'dev',
 			  color:true
-			  
             };
-
 			
-function getStyle(color,errorType){
-
+function getInlineStyle(color,errorType){
 colorArray=Object.keys(color[errorType]);
-
 var $string='';
-
 if(colorArray.indexOf("bc")!= -1){
        $string += 'background-color:'+color[errorType].bc+';';	
 }
 if(colorArray.indexOf("bold")!= -1){
        $string += 'font-weight:bold;';	
 }
-
 if(colorArray.indexOf("fc")!= -1){
        $string += 'color:'+color[errorType].fc+';';	
 }
-
 return $string;
 }
 
 var prefixFillZero=function(str){
-
 if(str<10){
 str='0'+str;
 }
-
 return str;
 }
 
 var getCurrentDate=function(){
-
 var monthNames = ["January", "February", "March", "April", "May", "June",
   "July", "August", "September", "October", "November", "December"
 ];
-
 var d = new Date();
-
 h=d.getHours();
 m=d.getMinutes();
 i=d.getSeconds();
 date=d.getDate();
-
 date=prefixFillZero(date);
 h=prefixFillZero(h);
 m=prefixFillZero(m);
 i=prefixFillZero(i);
-
-
 $date='['+d.getFullYear()+' '+date+' '+monthNames[d.getMonth()]+','+' '+h+':'+m+':'+i+'] ';
 return $date;
-}
-			
-//log [msg,mode,isColorEnable,mode proptery]
-var fn_log_e=function(msg,mode,isColorEnable,mp,pre,post,repeat){
-
-$date=getCurrentDate();
-if(isColorEnable){
-css=getStyle(mp.color,'log');
-if(pre != undefined){
-repNumber=repeat || 1;
-  preT=pre.repeat(repNumber); 
- console.log("%c"+preT,css)
-}
-console.log($date+"%c"+msg,css)
-if(post != undefined){
-repNumber=repeat || 1;
-  postT=post.repeat(repNumber); 
- console.log("%c"+postT,css)
-}
-}else{
-if(pre != undefined){
-  repNumber=repeat || 1;
-  preT=pre.repeat(repNumber); 
- console.log(preT)
-}
-console.log($date+msg)
-if(post != undefined){
- repNumber=repeat || 1;
-  postT=post.repeat(repNumber); 
- console.log(postT)
-}
-}
-
-}
-//warn [msg,mode,isColorEnable,mode proptery]
-var fn_warn_e=function(msg,mode,isColorEnable,mp,pre,post,repeat){
-
-$date=getCurrentDate();
-if(isColorEnable){
-css=getStyle(mp.color,'warn');
-if(pre != undefined){
-repNumber=repeat || 1;
-  preT=pre.repeat(repNumber); 
- console.log("%c"+preT,css)
-}
-console.log($date+"%c"+msg,css)
-if(post != undefined){
-repNumber=repeat || 1;
-  postT=post.repeat(repNumber); 
- console.log("%c"+postT,css)
-}
-}else{
-if(pre != undefined){
-  repNumber=repeat || 1;
-  preT=pre.repeat(repNumber); 
- console.log(preT)
-}
-console.warn($date+msg)
-if(post != undefined){
- repNumber=repeat || 1;
-  postT=post.repeat(repNumber); 
- console.log(postT)
-}
-}
-
-}
-//error [msg,mode,isColorEnable,mode proptery]
-var fn_error_e=function(msg,mode,isColorEnable,mp,pre,post,repeat){
-
-$date=getCurrentDate();
-if(isColorEnable){
-css=getStyle(mp.color,'error');
-if(pre != undefined){
-repNumber=repeat || 1;
-  preT=pre.repeat(repNumber); 
- console.log("%c"+preT,css)
-}
-console.log($date+"%c"+msg,css)
-if(post != undefined){
-repNumber=repeat || 1;
-  postT=post.repeat(repNumber); 
- console.log("%c"+postT,css)
-}
-}else{
-if(pre != undefined){
-  repNumber=repeat || 1;
-  preT=pre.repeat(repNumber); 
- console.log(preT)
-}
-console.error($date+msg)
-if(post != undefined){
- repNumber=repeat || 1;
-  postT=post.repeat(repNumber); 
- console.log(postT)
-}
-}
-
 }
 			
 function fn_NN_JS_Log(updateOpt){
 var self=this;
 self.newOpt=$.extend( true, defaultOpt, updateOpt );  
-console.log(self);
   if('dev'==self.newOpt.mode){
     self.isLogEnable=self.newOpt.dev.show_log;
-	self.mp=self.newOpt.dev;
+	self.isColorEnable=self.newOpt.color;
+	//getCurrentProperty mode property
+	self.getCurrentProperty=self.newOpt.dev;
   }else if('pro'==self.newOpt.mode){
 	self.isLogEnable=self.newOpt.pro.show_log;
-	//mp mode property
-	self.mp=self.newOpt.pro;
+	self.isColorEnable=self.newOpt.color;
+	//getCurrentProperty mode property
+	self.getCurrentProperty=self.newOpt.pro;
   }else{
     console.error('Please select correct mode: dev, pro or you can make your own mode.');
 	return false;
@@ -225,32 +114,57 @@ console.log(self);
 self.prefix=null;
 self.suffix=null;
 self.repeat=null;  
+self.pre=function(whichConsole,errorType){
+if((self.prefix) != undefined){
+repNumber=(self.repeat) || 1;
+preT=(self.prefix).repeat(repNumber); 
+self.printMsg(whichConsole,preT,errorType);
+}
+};
+self.post=function(whichConsole,errorType){
+if((self.suffix) != undefined){
+repNumber=(self.repeat) || 1;
+postT=(self.suffix).repeat(repNumber); 
+self.printMsg(whichConsole,postT,errorType);
+}
+};
+
+self.run=function(whichConsole,msg,errorType){
+self.pre(whichConsole,errorType);
+self.printMsg(whichConsole,msg,errorType);
+self.post(whichConsole,errorType);
+};
+
+self.printMsg=function(whichConsole,msg,errorType){
+$date=getCurrentDate();
+if(self.isColorEnable){
+inlineStyleCss=getInlineStyle(self.getCurrentProperty.color,errorType);
+whichConsole((errorType.charAt(0)).toUpperCase()+': '+$date+"%c"+msg,inlineStyleCss);
+}else{
+whichConsole((errorType.charAt(0)).toUpperCase()+': '+$date+' '+msg);
+}
+
+}
+
+
 self.log=function(msg){
 
 if(self.isLogEnable){
-
-  fn_log_e(msg,self.newOpt.mode,self.newOpt.color,self.mp,self.prefix,self.suffix,self.repeat);
+   self.run(console.log,msg,'log');
 }
 
 };
+
 self.warn=function(msg){
-
 if(self.isLogEnable){
-
-  fn_warn_e(msg,self.newOpt.mode,self.newOpt.color,self.mp,self.prefix,self.suffix,self.repeat);
+self.run(console.warn,msg,'warn');
 }
-
-
 };
 self.error=function(msg){
-
 if(self.isLogEnable){
-
-  fn_error_e(msg,self.newOpt.mode,self.newOpt.color,self.mp,self.prefix,self.suffix,self.repeat);
+self.run(console.error,msg,'error');
 }
-
 };
-
  return self;
 }
 
@@ -262,22 +176,25 @@ window.NN_JS_Log=function(updateOpt){
 
 })(jQuery,window);
 
+
 var NN_log_color=NN_JS_Log({color:true})
 NN_log_color.prefix='prefixxx';
 NN_log_color.repeat=null;
 NN_log_color.suffix='suffixxx';
 NN_log_color.log('Log');
-NN_log_color.log('Log');
 NN_log_color.warn('Warn');
 NN_log_color.error('Error');
+
+
 var NN_log_no_color=NN_JS_Log({color:false})
 NN_log_no_color.prefix='prefixxx';
 NN_log_no_color.repeat=null;
 NN_log_no_color.suffix='suffixxx';
-
 NN_log_no_color.log('Log');
 NN_log_no_color.warn('Warn');
 NN_log_no_color.error('Error');
+
+
 </script>
 
 
