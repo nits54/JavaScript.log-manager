@@ -125,12 +125,23 @@ self.printMsg(whichConsole,msg,errorType);
 self.post(whichConsole,errorType);
 };
 self.printMsg=function(whichConsole,msg,errorType){
+	
+if(errorType=='warn'){		
+console.whichConsole=console.warn;	
+}else if(errorType=='error'){		
+console.whichConsole=console.error;	
+}else{
+	console.whichConsole=console.log;
+}
+	
 $date=getCurrentDate();
+
+
 if(self.isColorEnable){
 inlineStyleCss=getInlineStyle(self.getCurrentProperty.color,errorType);
-whichConsole((errorType.charAt(0)).toUpperCase()+': '+$date+"%c"+msg,inlineStyleCss);
+console.whichConsole((errorType.charAt(0)).toUpperCase()+': '+$date+"%c"+msg,inlineStyleCss);
 }else{
-whichConsole((errorType.charAt(0)).toUpperCase()+': '+$date+' '+msg);
+console.whichConsole((errorType.charAt(0)).toUpperCase()+': '+$date+' '+msg);
 }
 }
 self.global=function(vari,val){
