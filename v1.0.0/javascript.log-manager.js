@@ -47,17 +47,17 @@ var defaultOpt={
             };
 			
 function getInlineStyle(color,errorType){
-colorArray=Object.keys(color[errorType]);
-var $string='';
-if(colorArray.indexOf("bc")!= -1){
-       $string += 'background-color:'+color[errorType].bc+';';	
-}
-if(colorArray.indexOf("bold")!= -1){
-       $string += 'font-weight:bold;';	
-}
-if(colorArray.indexOf("fc")!= -1){
-       $string += 'color:'+color[errorType].fc+';';	
-}
+
+	var $string='';
+	if(color[errorType]['bc']){
+	 $string += 'background-color:'+color[errorType].bc+';';	
+    }
+	if(color[errorType]['bold']){
+		   $string += 'font-weight:bold;';	
+	}
+	if(color[errorType]['fc']){
+		   $string += 'color:'+color[errorType].fc+';';	
+	}
 return $string;
 }
 var prefixFillZero=function(str){
@@ -107,7 +107,7 @@ self.repeat=1;
 self.pre=function(whichConsole,errorType){
 if((self.prefix) != undefined){
 repNumber=Math.abs(parseInt(self.repeat)) || 1;
-preT=(self.prefix).repeat(repNumber); 
+try{preT=(self.prefix).repeat(repNumber);}catch(err){j=new Array();for(i=1;i<=repNumber;i++){j.push(self.prefix);};preT=j.join('');} //IE 8
 self.printMsg(whichConsole,preT,errorType);
 }
 };
@@ -115,7 +115,7 @@ self.post=function(whichConsole,errorType){
 if((self.suffix) != undefined){
 repNumber=Math.abs(parseInt(self.repeat)) || 1;
 self.repeat=Math.abs(parseInt(self.repeat));
-postT=(self.suffix).repeat(repNumber); 
+try{postT=(self.suffix).repeat(repNumber);}catch(err){j=new Array();for(i=1;i<=repNumber;i++){j.push(self.suffix);};postT=j.join('');}  //IE 8
 self.printMsg(whichConsole,postT,errorType);
 }
 };
