@@ -163,10 +163,30 @@ console.whichConsole((errorType.charAt(0)).toUpperCase()+': '+$date+"%c"+msg,inl
 console.whichConsole((errorType.charAt(0)).toUpperCase()+': '+$date+' '+msg);
 }
 }
+
+self.globalArray=new Array();
+
+self.globalDef=function(){
+	console.log('Total lenght of Global variable:' +self.globalArray.length);
+	console.log(self.globalArray);
+	
+	
+}
+
 self.global=function(vari,val){
 if(self.isLogEnable){
  if(vari != undefined){
+	self.globalArray.push('nn_js_global_'+vari); 
+	
     window['nn_js_global_'+vari]=val;
+  }
+}
+};
+
+self.alert=function(val){
+if(self.isLogEnable){
+ if(val != undefined){
+    alert(val);
   }
 }
 };
