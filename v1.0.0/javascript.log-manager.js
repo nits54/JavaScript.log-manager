@@ -46,6 +46,19 @@ var defaultOpt={
 			  color:true
             };
 			
+function getMeBrowserDetail(){
+	r=new RegExp('(firefox|safari|msie|chrome).([0-9\.]{1,})');
+	browserStr=r.exec(navigator.userAgent.toLowerCase());
+
+	if(browserStr===null){
+	 return {bn:'unknown','bv':-1};
+	}else{
+	return {bn:browserStr['1'],'bv':browserStr['2']};
+	}
+}
+
+			
+			
 function getInlineStyle(color,errorType){
 
 	var $string='';
@@ -85,6 +98,7 @@ return $date;
 			
 function fn_NN_JS_Log(updateOpt){
 var self=this;
+self.browser_detail=getMeBrowserDetail();
 self.newOpt=$.extend( true, defaultOpt, updateOpt );  
   if('dev'==self.newOpt.mode){
     self.isLogEnable=self.newOpt.dev.show_log;
@@ -120,6 +134,11 @@ self.printMsg(whichConsole,postT,errorType);
 }
 };
 self.run=function(whichConsole,msg,errorType){
+	
+	if('unknown'==self.browser_detail['bn'] || 'msie'==self.browser_detail['bn'] || 'safari'==self.browser_detail['bn'] ){
+		self.isColorEnable=false;
+	}
+	
 self.pre(whichConsole,errorType);
 self.printMsg(whichConsole,msg,errorType);
 self.post(whichConsole,errorType);
