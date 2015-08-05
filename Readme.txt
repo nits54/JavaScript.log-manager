@@ -10,6 +10,7 @@
 4) Easy colour map for dev and pro for log/warn/error. Color map is only available when log is enable.      
 5) Easy to set prefix and postfix message in log/warn/error message.
 6) Easy to set a global variable to check in console area(F12). Global variable functionality only work. When log is  enabled. All global variable start with nn_js_global_.
+7) Easy to show alert. Alert only available when log is enable.
 
 Pro:
  Error log is Disable.
@@ -55,6 +56,9 @@ log(mgs): Print mgs on console.
 warn(mgs): Print mgs on console.
 error(mgs): Print mgs on console.
 global(variableName,variableValue): Create global variable, when log is enable. Global name start with nn_js_global_{variableName}.
+alert(mgs): Show the alert.
+globalDef(void): Show all the global variable in console(Array).
+
     
    
 
