@@ -167,7 +167,7 @@ console.whichConsole((errorType.charAt(0)).toUpperCase()+': '+$date+' '+msg);
 self.globalArray=new Array();
 
 self.globalDef=function(){
-	console.log('Total lenght of Global variable:' +self.globalArray.length);
+	console.log('Total length of Global variable:' +self.globalArray.length);
 	console.log(self.globalArray);
 	
 	
