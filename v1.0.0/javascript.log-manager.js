@@ -118,32 +118,32 @@ self.newOpt=$.extend( true, defaultOpt, updateOpt );
 self.prefix=null;
 self.suffix=null;
 self.repeat=1;  
-self.pre=function(whichConsole,errorType){
+self.pre=function(errorType){
 if((self.prefix) != undefined){
 repNumber=Math.abs(parseInt(self.repeat)) || 1;
 try{preT=(self.prefix).repeat(repNumber);}catch(err){j=new Array();for(i=1;i<=repNumber;i++){j.push(self.prefix);};preT=j.join('');} //IE 8
-self.printMsg(whichConsole,preT,errorType);
+self.printMsg(preT,errorType);
 }
 };
-self.post=function(whichConsole,errorType){
+self.post=function(errorType){
 if((self.suffix) != undefined){
 repNumber=Math.abs(parseInt(self.repeat)) || 1;
 self.repeat=Math.abs(parseInt(self.repeat));
 try{postT=(self.suffix).repeat(repNumber);}catch(err){j=new Array();for(i=1;i<=repNumber;i++){j.push(self.suffix);};postT=j.join('');}  //IE 8
-self.printMsg(whichConsole,postT,errorType);
+self.printMsg(postT,errorType);
 }
 };
-self.run=function(whichConsole,msg,errorType){
+self.run=function(msg,errorType){
 	
 	if('unknown'==self.browser_detail['bn'] || 'msie'==self.browser_detail['bn'] || 'safari'==self.browser_detail['bn'] ){
 		self.isColorEnable=false;
 	}
 	
-self.pre(whichConsole,errorType);
-self.printMsg(whichConsole,msg,errorType);
-self.post(whichConsole,errorType);
+self.pre(errorType);
+self.printMsg(msg,errorType);
+self.post(errorType);
 };
-self.printMsg=function(whichConsole,msg,errorType){
+self.printMsg=function(msg,errorType){
 	
 if(errorType=='warn'){		
 console.whichConsole=console.warn;	
@@ -192,17 +192,17 @@ if(self.isLogEnable){
 };
 self.log=function(msg){
 if(self.isLogEnable){
-   self.run(console.log,msg,'log');
+   self.run(msg,'log');
 }
 };
 self.warn=function(msg){
 if(self.isLogEnable){
-self.run(console.warn,msg,'warn');
+self.run(msg,'warn');
 }
 };
 self.error=function(msg){
 if(self.isLogEnable){
-self.run(console.error,msg,'error');
+self.run(msg,'error');
 }
 };
  return self;
