@@ -1,27 +1,201 @@
+<!DOCTYPE html>
 <html>
 <head>
-<title>Implementing Javascript Log</title>
+<title>Implemented Javascript Log</title>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 <script src="./javascript.log-manager.min.js"></script>
-</head>
-<body>
-<h1>Implementing Javascript Log</h1>
 <script>
 var logObj=NN_JS_Log({color:true})
-logObj.prefix='prefixxx';
-logObj.repeat=1;
+logObj.prefix='---- prefix ----';
+logObj.suffix='---- suffix ----';
+logObj.repeat=3;
 logObj.log('Log');
 logObj.prefix=null;
+
 logObj.warn('Warn');
 logObj.error('Error');
 var a='global testing';
 logObj.global('test',a);
 logObj.global('test1','global_testing');
-logObj.alert('test');
+logObj.alert('Js manager test');
 logObj.globalDef();
 </script>
 
+<style>
+.table {
+    border: 1px solid grey;
+	margin:10px 0px;
+}
+.table td {
+    border: 1px solid grey;
+    padding: 9px;
+	
+}
+.ta-c{
+ text-align:center
+}
+</style>
+
+</head>
+<body>
+<h1>Implemented Javascript Log</h1>
 
 
+<h3>How to open the Javascript console:</h3>
+<p>
+ <ul>
+    <li>Chrome/Windows: CTRL+SHIFT+J</li>
+    <li>Chrome/Mac: CMD+ALT+J</li>
+    <li>Firefox/Windows: CTRL+SHIFT+I</li>
+    <li>Firefox/Mac: CMD+ALT+K</li>
+	<li><a href='https://addons.mozilla.org/en-US/firefox/addon/firebug/' target="_blank" title='external link'>Install Firebug on Firefox</a></li>
+    <li>Internet Explorer: F12 to open Developer Tools, then click the Console tab or button</li>
+ </ul>
+</p>
+  <h3>Easy to use:</h3>
+    <p>
+	  <ul>
+		<li>Easy to show/hide log in console area.</li>
+		<li>Easy to maintain.</li>
+		<li>Easy to switch the mode like Production(<b>pro</b>) or Development(<b>dev</b>).</li>
+		<li>Easy colour map for dev and pro for log/warn/error. Color map is only available when log is enable.</li>      
+		<li>Easy to set prefix and postfix message in log/warn/error message.</li>
+		<li>Easy to set a global variable to check in console area(F12). Global variable functionality only work. When log is  enabled. All global variable start with <b>nn_js_global_</b>.</li>
+		<li>Easy to show alert. Alert only available when <b>log is enable</b>.</li>
+      </ul>
+	  
+	</p>
+
+   <h3>Requirements:</h3>	
+   <p>
+     <ul>
+	  <li><a href="https://jquery.com/download/" target="_blank" title='external link'>Install Jquery</a> (https://jquery.com/download/)</li>
+	  <li>Install Javascript Log manager js of specific version.</li>
+	 </ul>
+   </p>
+
+    <h3>Feature</h3>
+	<dl>
+	  <dt>Pro:</dt>
+	  <dd>Error log is Disable.</dd>
+	  <dt>Dev:</dt>
+	  <dd>Error log is Enable.</dd>
+	</dl>
+   
+ 
+    <h3>Create a variable within the head tag</h3>
+	<p><code>var logObj=NN_JS_Log(); //default mode: dev and color: true</code></p>
+	
+	<h3>Switch the mode from dev to pro.</h3>
+	<p><code>var logObj=NN_JS_Log({mode:'pro'});</code></p>
+	
+
+   
+   
+	<h3>V 1.0.0</h3>
+	 <p>
+	    <table cellspacing="0" class="table">
+		 <tr>
+		   <td class='ta-c' colspan='2'>Property</td>
+		 </tr>
+		 <tr>
+		   <td class='ta-c'>Property Name</td>
+		   <td class='ta-c'>Description</td>
+		 </tr>
+		 <tr>
+		   <td>mode</td>
+		   <td>Tell which mode should be loaded.</td>
+		 </tr>
+		 <tr>
+		   <td>color</td>
+		   <td>Color log/warn/error should be enable or not.</td>
+		 </tr>
+		 <tr>
+		   <td>show_log</td>
+		   <td>Log should be enable or not.</td>
+		 </tr>
+		 <tr>
+		   <td>prefix</td>
+		   <td>Set message for prefix. What to show before console. (default: null) </td>
+		 </tr>
+		 <tr>
+		   <td>repeat</td>
+		   <td>How many time to repeat the message of prefix and suffix. (default: 1)</td>
+		 </tr>
+		 <tr>
+		   <td>suffix</td>
+		   <td>Set message for suffix. What to show after console. (default: null)</td>
+		 </tr>
+		</table>
+		
+	  <table cellspacing="0" class="table">
+		 <tr>
+		   <td  class='ta-c' colspan='3'>Method</td>
+		 </tr>
+		 <tr>
+		  <td class='ta-c'>Method Name</td>
+		  <td class='ta-c'>Parameter</td>
+		  <td class='ta-c'>Description</td>
+		 </tr>
+		 <tr>
+		   <td>log</td>
+		   <td>mgs</td>
+		   <td>Print mgs on console.</td>
+		 </tr>
+		 <tr>
+		   <td>warn</td>
+		   <td>mgs</td>
+		   <td>Print mgs on console.</td>
+		 </tr>
+		 <tr>
+		   <td>error</td>
+		   <td>mgs</td>
+		   <td>Print mgs on console.</td>
+		 </tr>
+		 <tr>
+		   <td>global</td>
+		   <td>variableName,variableValue</td>
+		   <td>Create global variable, when log is enable. Global name start with nn_js_global_{variableName}.</td>
+		 </tr>
+		 <tr>
+		   <td>alert</td>
+		   <td>mgs</td>
+		   <td>Show the alert.</td>
+		 </tr>
+		 <tr>
+		   <td>globalDef</td>
+		   <td>void</td>
+		   <td>Show all the global variable in console(Array).</td>
+		 </tr>
+		</table>
+	 </p>
+ 
+    <h3>snippet</h3>
+	 <p>
+	   <code>
+		var logObj=NN_JS_Log({color:true});<br/>
+		logObj.prefix='---- prefix ----';<br/>
+		logObj.suffix='---- suffix ----';<br/>
+		logObj.repeat=3;<br/>
+		logObj.log('Log');<br/>
+		logObj.prefix=null;<br/>
+
+		logObj.warn('Warn');<br/>
+		logObj.error('Error');<br/>
+		var a='global testing';<br/>
+		logObj.global('test',a);<br/>
+		logObj.global('test1','global_testing');<br/>
+		logObj.alert('Js manager test');<br/>
+		logObj.globalDef();<br/>
+	   </code>
+	 </p>
+ 
+  <h3>Screenshots</h3>
+   <p>
+	  <p>Firefox Console</p>
+	  <p><img src="../images/Firefox_Console.jpg" alt='Firefox Console' title='Firefox Console' /></p>
+	  <p>Firebug</p>
+	  <p><img src="../images/Firebug.jpg" alt='Firebug' title='Firebug' /></p>
+  </p>
 </body>
 </html>

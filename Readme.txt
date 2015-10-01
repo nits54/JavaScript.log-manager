@@ -4,7 +4,7 @@
 --------------- V1.0.0 ----------------------------------
 
 
-1) Easy show/hide log in console area.
+1) Easy to show/hide log in console area.
 2) Easy to maintain.
 3) Easy to switch the mode like Production(pro) or Development(dev). 
 4) Easy colour map for dev and pro for log/warn/error. Color map is only available when log is enable.      
